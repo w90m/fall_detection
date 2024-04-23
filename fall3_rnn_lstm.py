@@ -2,6 +2,7 @@
 import os
 import pandas as pd
 import numpy as np
+import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder
 from keras.models import Sequential
@@ -91,11 +92,43 @@ optimizer = Adam(learning_rate=0.001)
 model.compile(optimizer=optimizer, loss='sparse_categorical_crossentropy', metrics=['accuracy'])
 
 # Step 4: Train the model
-history = model.fit(X_train, y_train, epochs=10, batch_size=32, validation_split=0.2)
+history = model.fit(X_train, y_train, epochs=30, batch_size=32, validation_split=0.2)
 
 # Step 5: Evaluate the model on the test data
 loss, accuracy = model.evaluate(X_test, y_test)
 print(f"Test Loss: {loss}, Test Accuracy: {accuracy}")
+
+
+
+acc=history.history['accuracy']
+val_acc=history.history['val_accuracy']
+loss=history.history['loss']
+val_loss=history.history['val_loss']
+
+epochs=range(len(acc)) # Get number of epochs
+
+#------------------------------------------------
+# Plot training and validation accuracy per epoch
+#------------------------------------------------
+plt.plot(epochs, acc, 'r', label='Training Accuracy')
+plt.plot(epochs, val_acc, 'b', label='Validation Accuracy')
+plt.title('Training and validation accuracy')
+plt.legend(loc=0)
+plt.grid()
+plt.figure()
+
+#------------------------------------------------
+# Plot training and validation loss per epoch
+#------------------------------------------------
+plt.plot(epochs, loss, 'r', label='Training Loss')
+plt.plot(epochs, val_loss, 'b', label='Validation Loss')
+plt.title('Training and validation Loss')
+plt.legend(loc=0)
+plt.grid()
+plt.figure()
+
+plt.show()
+
 
 
 

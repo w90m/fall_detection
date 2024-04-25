@@ -1,3 +1,11 @@
+Fall Detection
+
+Weng Maton
+
+<https://github.com/w90m/fall_detection.git>
+
+<https://studio.edgeimpulse.com/public/383839/live>
+
 # Introduction
 
 This project is based on using the Arduino Nano and Deep Learning to detect falls. Falls are usually unpredictable events that can lead to serious injury or prove fatal. Studies by the NHS report that dealing with falls cost over £2 Billion annually – in ambulance call outs, hospital admissions, treatment etc. Using accelerometer data from the Arduino Nano along with a DL architecture, a model will be implemented that detects falls and other activities of daily living e.g. walking.

@@ -14,6 +14,8 @@ Is it possible to create a low cost, non-invasive device that detects and alerts
 
 The fall detection system should be able to detect a fall and display this in an app. It was initially thought that the app had to be created from scratch until the discovery of an open-source app called Nrf connect. This allows simple connection to Bluetooth. The building blocks of the project then include data collection, preprocessing, model architecture selection, training, deployment and evaluation.
 
+![A blue rectangular sign with white text Description automatically generated](media/cee54d430cb267516ae8bf128b63aa1f.png)
+
 Data capture and prototype models have been performed using Edge impulse – with different architectures experimented in Python using Visual Studio Code. As discussed in later sections, it was shown that the simple prototypes developed in Edge impulse provided suitable accuracy results and reasonable performance in testing and inference.
 
 ## Accelerometer
@@ -36,11 +38,11 @@ BLE is optimised for low power use at low data rates, designed for use with batt
 
 The MIT app inventor is an open-source platform for creating android applications using the block style drag and drop format. Alongside Bluetooth, it can also be used to connect the Arduino Nano to a smartphone and display the results from inference.
 
-# ![](media/11a5dabdcee124fabb0cd361dcf30ef7.jpeg)Data
+# Data
 
 Data was collected with a wired USB connection between the Nano and laptop – due to Bluetooth functionality not being available on Edge Impulse. The data initially was collected for 6 classes – walking, idle, left-side fall, right-side fall, backwards fall and forward fall. It contains 1hr 8mins of data – 30mins of walking, 5mins of fall x4, 5 mins of idle. Walking was sampled at 1 min per sample whilst the other classes were 10 seconds for each sample.
 
-![](media/146f6c3ac297d945d569ad1a7606e0b5.png)![](media/94e88c954bb44aa9ff4bf5c4a4ffb85e.png)
+![](media/87edfe04b0831242e88bbe2693b2b9b5.png)
 
 # Model
 
@@ -65,7 +67,7 @@ The dataset size was then increased (more idle data added to both training and t
 | Dense layer (10 neurons)  | Dense layer (10 neurons)   |
 | Output layer (2 classes)  | Output layer (3 classes)   |
 
-![A screenshot of a computer Description automatically generated](media/6b70e08b0791964738ccf25c70c7c48d.png) ![A screenshot of a graph Description automatically generated](media/1530e2a8b8fd4f75906c1669721fd342.png)
+![](media/4d62e67653862576470c8d14845a3228.png)
 
 ### Working model
 
@@ -78,7 +80,7 @@ A third model was developed trained and deployed – based on the second model o
 | Dense layer (10 neurons)           |
 | Output layer (3 classes)           |
 
-![A screenshot of a graph Description automatically generated](media/d0c578e6e97d81b17bc798d72cd7b933.png)![A screenshot of a graph Description automatically generated](media/0356b441979a10d694c54e89400a5234.png)
+![](media/3263e1bb6a29f6bff9c4b85ea5c56d43.png)
 
 The model training results may have been improved with more epochs, more layers or more neurons per layer – it was decided to leave it as it is to prevent overfitting the training data. The test results were lower than the training, probably indicating that the model was still overfitting on the training data and not generalizing as well to new unseen data.
 
@@ -92,13 +94,13 @@ A RNN is a DL architecture that is well suited for time series data. Time series
 
 Test Loss: 0.63, Test Accuracy: 0.72
 
-![](media/6a8ba0c2353058f0f452cd79481660f2.png) ![A graph with a line graph Description automatically generated](media/044338acc054ddb9382dd8277837e134.png)
+![A graph of training loss and training loss Description automatically generated](media/465582ea05a99e1af55e94c0fcd14de6.png)
 
 ### LSTM
 
 Long Short-Term Memory is a type of RNN that removes the vanishing gradient problem, introducing memory cells and gates that regulate the flow of information through the network. This architecture was also implemented in Python and produced a suboptimal performance.
 
-![](media/556a9cc75f05c2acad75cd6a0e76e1f4.png) ![A graph with blue lines and red lines Description automatically generated](media/8fc12e0147c6154352b183a0acdbcc52.png)
+![](media/d4ccd0ceac00ed9fedbe100dd3294581.png)
 
 Test Loss: 0.60, Test Accuracy: 0.70
 
@@ -106,13 +108,17 @@ Both the RNN and LSTM models had low training and test accuracy, therefore it di
 
 # Experiments
 
-The nature of the project meant that experiments had to be carried out on a deployed model and the performance analysed by whether the classification corresponded with the wearers’ activity. The results of the experiments are shown in the project demonstration video. The working model was uploaded to the Nano which was connected to a battery pack and connected to the Nrf connect app via Bluetooth BLE.
+The nature of the project meant that experiments had to be carried out on a deployed model and the performance analysed by whether the classification corresponded with the wearers’ activity. The results of the experiments are shown in the project demonstration video. The working model was uploaded to the Nano which was connected to a battery pack and connected to the Nrf connect app via Bluetooth.
 
-![A person wearing a grey shirt and blue jeans Description automatically generated](media/20720ebbdf5719da61ddb868119cbffc.jpeg)![](media/1c72587b8827e70379dfd8774e0842f6.jpeg)
+![](media/b5ed6826343ef5c351320fa67512841a.png)
+
+![A diagram of a diagram of a product Description automatically generated with medium confidence](media/12646081e30bee61294023c2c6c989eb.png)
 
 Inference results are shown under the first “Unknown Characteristic”.
 
-## ![](media/ee08e70baa7dd8789b14c27655e72aef.jpeg) ![](media/8386e5885bd41977bafbba78dc1bdae3.jpeg) ![](media/cedcf6cd4fd7016f21ddf4b00a40f3da.jpeg)Responsiveness
+![](media/c3fa7af8a249602edcddcb88a292837c.png)
+
+## Responsiveness
 
 The system was tested given ten-second windows to allow for transitions. Each test waited for the inference result to change e.g. to test for walking, the system had to display fall or idle first.
 
@@ -143,11 +149,11 @@ In this experiment, the device was tested to see if it could detect a wearer sta
 
 Attempts were made to create an app that would perform just as the Nrf connect app – displaying the inference results, but also giving the opportunity to potentially add the SMS / phone call capability. It was possible to connect the app to the Nano and control the on-board LED with a smartphone, but it was unresponsive in displaying inference results.
 
-![A screenshot of a computer screen Description automatically generated](media/7e03c31b7c61bf5373ab4fd67f35c66c.png) ![](media/ef6e52512765e99e66c7ab0a1b6d8fc3.jpeg)
+![](media/2dbd3931e50e35ecdb7209854e668a93.png)
 
 # Results and Observations
 
-The Python models proved to be difficult to upload to the Arduino. Steps were taken to convert the models to TesorFlowLite, then add this as a library to the Arduino .ino file but that did not work. Another method was to upload the model to Edge Impulse and then process it from there. The model was uploaded, converted to a .zip library but this also did not work when trying to deploy it on the Nano. The best results were found by using the models generated in Edge Impulse.
+The Python models proved to be difficult to upload to the Arduino. Steps were taken to convert the models to TensorFlowLite, then add this as a library to the Arduino .ino file but that did not work. Another method was to upload the model to Edge Impulse and then process it from there. The model was uploaded, converted to a .zip library but this also did not work when trying to deploy it on the Nano. The best results were found by using the models generated in Edge Impulse.
 
 ## Neural network with three classes
 

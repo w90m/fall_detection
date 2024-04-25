@@ -172,3 +172,13 @@ Secondly, the system needs to account for delayed response in both inference and
 Thirdly, such a system will need to account for false positives – a way of confirming that the wearer has fallen, maybe with a call response mechanism. Fourthly, experiments can be taken of the device in different locations such as waist worn to account for possible excessive arm movements.
 
 To further improve on this project, two Nanos can be deployed with different models (such as RNNs and LSTMs) and compared against each other. The Fall Detection app can be completed and further developed to process the event of a fall, sending an SMS or a call to another device – simulating an emergency response. Taking these changes into account will help to develop a more robust system.
+
+# Declaration of Authorship
+
+I, Weng Maton, confirm that the work presented in this assessment is my own. Where information has been derived from other sources, I confirm that this has been indicated in the work.
+
+Weng Maton
+
+ASSESSMENT DATE: 25th April 2024
+
+Word count: 2207

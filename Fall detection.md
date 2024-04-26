@@ -1,4 +1,4 @@
-Fall Detection
+# Fall Detection
 
 Weng Maton
 
@@ -6,7 +6,7 @@ Weng Maton
 
 <https://studio.edgeimpulse.com/public/383839/live>
 
-# Introduction
+## Introduction
 
 This project is based on using the Arduino Nano and Deep Learning to detect falls. Falls are usually unpredictable events that can lead to serious injury or prove fatal. Studies by the NHS report that dealing with falls cost over £2 Billion annually – in ambulance call outs, hospital admissions, treatment etc. Using accelerometer data from the Arduino Nano along with a DL architecture, a model will be implemented that detects falls and other activities of daily living e.g. walking.
 
@@ -14,11 +14,11 @@ The inspiration for this project is based on research and conversations with an 
 
 Some projects and real-world products regarding fall detection already exist such as safety alarm wearables from Buddi and SureSafe. These products inspired the direction of the project though in some cases machine learning is not being used – but other methods such as calculation of change in height and acceleration of the device.
 
-# Research Question
+## Research Question
 
 Is it possible to create a low cost, non-invasive device that detects and alerts a carer when a fall occurs? Cameras are not being considered to maintain privacy and because they are limited to a particular location. Rather than being preventative, this project aims at improving responsiveness in dealing with cases of falls.
 
-# Application Overview
+## Application Overview
 
 The fall detection system should be able to detect a fall and display this in an app. It was initially thought that the app had to be created from scratch until the discovery of an open-source app called Nrf connect. This allows simple connection to Bluetooth. The building blocks of the project then include data collection, preprocessing, model architecture selection, training, deployment and evaluation.
 
@@ -26,37 +26,37 @@ The fall detection system should be able to detect a fall and display this in an
 
 Data capture and prototype models have been performed using Edge impulse – with different architectures experimented in Python using Visual Studio Code. As discussed in later sections, it was shown that the simple prototypes developed in Edge impulse provided suitable accuracy results and reasonable performance in testing and inference.
 
-## Accelerometer
+### Accelerometer
 
 The Nano has onboard this three-axis electro-mechanical device that measures the rate of change of velocity of body relative to an observer. It will be used to generate data for training, testing and inference.
 
-## Edge Impulse
+### Edge Impulse
 
 Edge Impulse is a ML platform that allows users to easily develop and deploy models. It is used here to gather data and provide a working model to verify the feasibility of the research question.
 
-## Nrf Connect
+### Nrf Connect
 
 This is an Android application from Nordic Semiconductor – who’s processor is in use on the Nano. Connection can be made via Bluetooth BLE and the inference results are to be viewed on the app.
 
-## Bluetooth Low Energy
+### Bluetooth Low Energy
 
 BLE is optimised for low power use at low data rates, designed for use with batteries. This is ideal for small portable / wearable devices. Central devices are the clients that request information form peripheral devices – the servers. Peripheral devices can also be considered as bulletin boards and the central devices are the viewers of the board. Information presented by the peripheral devices are known as services and each service is subdivided into characteristics. In this case the central device (client) is the smartphone running Nrf connect, and the peripheral device (server) is the Nano advertising its characteristics. The “notify” mechanism automatically updates the value of a characteristic. This will be used for inferencing – where the data stream from the accelerometer continuously changes the predictions.
 
-## MIT App Inventor
+### MIT App Inventor
 
 The MIT app inventor is an open-source platform for creating android applications using the block style drag and drop format. Alongside Bluetooth, it can also be used to connect the Arduino Nano to a smartphone and display the results from inference.
 
-# Data
+## Data
 
 Data was collected with a wired USB connection between the Nano and laptop – due to Bluetooth functionality not being available on Edge Impulse. The data initially was collected for 6 classes – walking, idle, left-side fall, right-side fall, backwards fall and forward fall. It contains 1hr 8mins of data – 30mins of walking, 5mins of fall x4, 5 mins of idle. Walking was sampled at 1 min per sample whilst the other classes were 10 seconds for each sample.
 
 ![](media/87edfe04b0831242e88bbe2693b2b9b5.png)
 
-# Model
+## Model
 
 The initial idea was to create a model to detect multiple activities of daily living – walking, idle and fall (four variations). Here is a link to the model: <https://studio.edgeimpulse.com/public/361363/live>. This test approach produced only 89% training accuracy over 100 epochs. It was then decided that an incremental approach would be taken starting with the data labelled as fall and no_fall.
 
-## Edge Impulse models
+### Edge Impulse models
 
 The first model was a simple binary classification model with 2 hidden layers and an output layer of 2 classes – fall and no_fall. The four types of falls were collated into one – fall. Here is a link to the model: <https://studio.edgeimpulse.com/public/373825/live>
 
@@ -77,7 +77,7 @@ The dataset size was then increased (more idle data added to both training and t
 
 ![](media/4d62e67653862576470c8d14845a3228.png)
 
-### Working model
+#### Working model
 
 A third model was developed trained and deployed – based on the second model of three classes. The walking data was resampled at 10 seconds each sample – down from 60 seconds. This model also has a 6th order low pass filter of 8Hz cut off frequency. It is assumed that this filter applied to the raw data will remove unneeded high frequencies such as from sudden movements – apart from those wanted by the fall. This model performed well during inference and correctly identified the classes of motion. Here is the link: <https://studio.edgeimpulse.com/public/383839/live>
 
@@ -92,11 +92,11 @@ A third model was developed trained and deployed – based on the second model o
 
 The model training results may have been improved with more epochs, more layers or more neurons per layer – it was decided to leave it as it is to prevent overfitting the training data. The test results were lower than the training, probably indicating that the model was still overfitting on the training data and not generalizing as well to new unseen data.
 
-## Visual Studio Code models
+### Visual Studio Code models
 
 Multiple models were also implemented to compare it with the results from Edge impulse. The data was exported and converted to CSV format before being pre-processed and fed into the relevant model.
 
-### Simple RNN
+#### Simple RNN
 
 A RNN is a DL architecture that is well suited for time series data. Time series data is a sequence of successive observations of the same phenomena at different time intervals – such as accelerometer data. One problem with simple RNNs is vanishing gradient problem – which is slow learning due to reduction in the size of the gradients propagating back through the network. Training this network in Python provided a model with low accuracy over 30 epochs and deploying it on the Arduino was problematic – as explained in the results section.
 
@@ -104,7 +104,7 @@ Test Loss: 0.63, Test Accuracy: 0.72
 
 ![A graph of training loss and training loss Description automatically generated](media/465582ea05a99e1af55e94c0fcd14de6.png)
 
-### LSTM
+#### LSTM
 
 Long Short-Term Memory is a type of RNN that removes the vanishing gradient problem, introducing memory cells and gates that regulate the flow of information through the network. This architecture was also implemented in Python and produced a suboptimal performance.
 
@@ -114,7 +114,7 @@ Test Loss: 0.60, Test Accuracy: 0.70
 
 Both the RNN and LSTM models had low training and test accuracy, therefore it didn’t seem plausible to expect a good performance if deployed on the microcontroller.
 
-# Experiments
+## Experiments
 
 The nature of the project meant that experiments had to be carried out on a deployed model and the performance analysed by whether the classification corresponded with the wearers’ activity. The results of the experiments are shown in the project demonstration video. The working model was uploaded to the Nano which was connected to a battery pack and connected to the Nrf connect app via Bluetooth.
 
@@ -126,7 +126,7 @@ Inference results are shown under the first “Unknown Characteristic”.
 
 ![](media/c3fa7af8a249602edcddcb88a292837c.png)
 
-## Responsiveness
+### Responsiveness
 
 The system was tested given ten-second windows to allow for transitions. Each test waited for the inference result to change e.g. to test for walking, the system had to display fall or idle first.
 
@@ -145,29 +145,29 @@ The system was tested given ten-second windows to allow for transitions. Each te
 
 As displayed in the table, the Idle case was the most difficult to reach. When placed on a table, the inference results easily reads Idle, but when worn on the wrist, it can hardly be detected. This may have been due to the way the data for the Idle case was recorded – some data was recorded when it was placed on a table and some when it was just carried in the hand – not all data had it strapped around the wrist.
 
-## Walking to Falling
+### Walking to Falling
 
 This experiment required the device to be strapped to the wrist and the wearer to walk a short distance before simulating a fall unto a mattress. With three attempts, the device correctly detected, walking and fall – though there was a noticeable delay in the display of the transition on the Nrf connect app.
 
-## Idle to Walking to Idle
+### Idle to Walking to Idle
 
 In this experiment, the device was tested to see if it could detect a wearer standing still, walking and then standing still again. This was the longest experiment that did not work for over an hour. The system kept wrongly classifying walking with falling. Eventually after re-uploading the model, it worked for the three times it was tested.
 
-## MIT App Inventor
+### MIT App Inventor
 
 Attempts were made to create an app that would perform just as the Nrf connect app – displaying the inference results, but also giving the opportunity to potentially add the SMS / phone call capability. It was possible to connect the app to the Nano and control the on-board LED with a smartphone, but it was unresponsive in displaying inference results.
 
 ![](media/2dbd3931e50e35ecdb7209854e668a93.png)
 
-# Results and Observations
+## Results and Observations
 
 The Python models proved to be difficult to upload to the Arduino. Steps were taken to convert the models to TensorFlowLite, then add this as a library to the Arduino .ino file but that did not work. Another method was to upload the model to Edge Impulse and then process it from there. The model was uploaded, converted to a .zip library but this also did not work when trying to deploy it on the Nano. The best results were found by using the models generated in Edge Impulse.
 
-## Neural network with three classes
+### Neural network with three classes
 
 This model designed in Edge impulse performed well in classifying the idle and falling classes but did not classify the walking in any of the inference tests.
 
-## Neural network with filtering
+### Neural network with filtering
 
 This was used as the final inference model with good performance in classifying activities. Tests were taken for transitioning between walking and falling, idle to walking and walking to idle. Though the model was somewhat slow in responsiveness at times, all three classes were correctly identified when the system functioned.
 
@@ -181,7 +181,7 @@ Thirdly, such a system will need to account for false positives – a way of con
 
 To further improve on this project, two Nanos can be deployed with different models (such as RNNs and LSTMs) and compared against each other. The Fall Detection app can be completed and further developed to process the event of a fall, sending an SMS or a call to another device – simulating an emergency response. Taking these changes into account will help to develop a more robust system.
 
-# Declaration of Authorship
+## Declaration of Authorship
 
 I, Weng Maton, confirm that the work presented in this assessment is my own. Where information has been derived from other sources, I confirm that this has been indicated in the work.
 
